@@ -42,6 +42,7 @@ func TestExampleSimpleUsage(t *testing.T) {
 	rootFunc()
 
 	s.MaybePrint()
+	s.Reset()
 }
 
 func TestExampleLoopUsage(t *testing.T) {

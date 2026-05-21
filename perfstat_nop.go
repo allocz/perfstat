@@ -23,6 +23,10 @@ func (s *Stats) MaybePrint() {
 	// NOP
 }
 
+func (s *Stats) Reset() {
+	// NOP
+}
+
 type Timer struct {}
 
 func (t *Timer) Finish(count ...uint64) {
