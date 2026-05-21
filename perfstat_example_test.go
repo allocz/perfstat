@@ -13,7 +13,6 @@ func TestExampleSimpleUsage(t *testing.T) {
 
 	rootFunc := func() {
 		end := s.StartTimer("rootFunc")
-		defer end(1)
 
 		f1 := func() {
 			time.Sleep(time.Millisecond * 50)
@@ -27,15 +26,17 @@ func TestExampleSimpleUsage(t *testing.T) {
 
 		endf := s.StartTimer("f1")
 		f1()
-		endf(1)
+		endf.Finish()
 
 		endf = s.StartTimer("f2")
 		f2()
-		endf(1)
+		endf.Finish()
 
 		endf = s.StartTimer("f3")
 		f3()
-		endf(1)
+		endf.Finish()
+
+		end.Finish()
 	}
 
 	rootFunc()
@@ -49,7 +50,6 @@ func TestExampleLoopUsage(t *testing.T) {
 
 	rootFunc := func() {
 		end := s.StartTimer("rootFunc")
-		defer end(1)
 
 		f1 := func() {
 			time.Sleep(time.Millisecond * 50)
@@ -63,11 +63,11 @@ func TestExampleLoopUsage(t *testing.T) {
 
 		endf := s.StartTimer("f1")
 		f1()
-		endf(1)
+		endf.Finish()
 
 		endf = s.StartTimer("f2")
 		f2()
-		endf(1)
+		endf.Finish()
 
 		endf = s.StartTimer("f3")
 		for range 100 {
@@ -75,7 +75,9 @@ func TestExampleLoopUsage(t *testing.T) {
 		}
 		// doing this instead of calling StartTimer() and endf() for 
 		// each iteration reduces synchronization overhead
-		endf(100)
+		endf.Finish()
+
+		end.Finish()
 	}
 
 	rootFunc()

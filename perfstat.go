@@ -9,17 +9,17 @@ import (
 	"time"
 )
 
+type statItem struct {
+	totalCost uint64
+	count uint64
+}
+
 type Stats struct {
 	mu sync.Mutex
 	data map[string]statItem
 	lastPrint time.Time
 
 	PrintInterval time.Duration
-}
-
-type statItem struct {
-	totalCost uint64
-	count uint64
 }
 
 func (s *Stats) Update(label string, totalCost, count uint64) {
@@ -39,11 +39,22 @@ func (s *Stats) Update(label string, totalCost, count uint64) {
 	s.mu.Unlock()
 }
 
-func (s *Stats) StartTimer(label string) func(count uint64) {
-	start := time.Now()
-	return func(count uint64) {
-		s.Update(label, uint64(time.Since(start).Nanoseconds()), count)
+func (s *Stats) StartTimer(label string) Timer {
+	return Timer{
+		stats: s,
+		start: time.Now(),
+		label: label,
 	}
+}
+
+func (s *Stats) Reset() {
+	s.mu.Lock()
+
+	clear(s.data)
+	s.lastPrint = time.Time{}
+	s.PrintInterval = 0
+
+	s.mu.Unlock()
 }
 
 func (s *Stats) MaybePrint() {
@@ -83,6 +94,21 @@ func (s *Stats) MaybePrint() {
 	fmt.Println(reportItems(items))
 
 	s.mu.Unlock()
+}
+
+type Timer struct {
+	stats *Stats
+	start time.Time
+	label string
+}
+
+func (t *Timer) Finish(count ...uint64) {
+	var c uint64 = 1
+	if len(count) > 0 {
+		c = count[0]
+	}
+	t.stats.Update( t.label, uint64(time.Since(t.start).Nanoseconds()),
+		c)
 }
 
 type reportItem struct {

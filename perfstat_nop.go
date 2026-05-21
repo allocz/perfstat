@@ -15,10 +15,16 @@ func nop(count uint64) {
 	// NOP
 }
 
-func (s *Stats) StartTimer(label string) func(count uint64) {
-	return nop 
+func (s *Stats) StartTimer(label string) Timer {
+	return Timer{}
 }
 
 func (s *Stats) MaybePrint() {
+	// NOP
+}
+
+type Timer struct {}
+
+func (t *Timer) Finish(count ...uint64) {
 	// NOP
 }
