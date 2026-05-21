@@ -10,7 +10,7 @@ import (
 var s perfstat.Stats
 
 func BenchmarkPerfstatStartTimer(b *testing.B) {
-	s := perfstat.Stats{}
+	s = perfstat.Stats{}
 	for range b.N {
 		endR := s.StartTimer("root")
 
