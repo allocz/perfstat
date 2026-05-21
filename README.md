@@ -27,14 +27,14 @@ rootFunc totalCost 1001702111 iterCost 1001702111 relativeCost 1.0000
         f1 totalCost 50513786 iterCost 50513786 relativeCost 0.0504
 ```
 
-As we can see, rootFunc uses 100% of the CPU time, then, inside this function,
-f3 uses ~80% of the cpu time. We can easily see that we can reduce up to ~80%
-of the elapsed time just by removing f3, in other words, we want to make f3 
+As we can see, rootFunc uses 100% of the wall clock time, then, inside this
+function, f3 uses ~80% of the time. We can easily see that we can reduce up to
+~80% of the elapsed time just by removing f3, in other words, we want to make f3 
 faster.
 
-All the values are stored as uint64, I usually set `cost` to the elapsed
-time in nanoseconds, and `count` to number of iterations in case of loops, or
-1 otherwise.
+All the values are stored as uint64, I usually set `cost` to the elapsed time in
+nanoseconds, and `count` to number of iterations in case of loops, or 1
+otherwise.
 
 ## Usage
 
