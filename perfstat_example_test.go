@@ -76,7 +76,7 @@ func TestExampleLoopUsage(t *testing.T) {
 		}
 		// doing this instead of calling StartTimer() and endf() for 
 		// each iteration reduces synchronization overhead
-		endf.Finish()
+		endf.Finish(100)
 
 		end.Finish()
 	}
